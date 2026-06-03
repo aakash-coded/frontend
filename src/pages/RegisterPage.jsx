@@ -6,13 +6,24 @@ import { motion } from 'framer-motion';
 
 function RegisterPage() {
   const [formData, setFormData] = useState({ username: '', email: '', password: '' });
+  const [formError, setFormError] = useState('');
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { loading } = useSelector((state) => state.auth);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const resultAction = await dispatch(register(formData));
+    const payload = {
+      username: formData.username.trim(),
+      email: formData.email.trim(),
+      password: formData.password,
+    };
+    if (payload.password.length < 8) {
+      setFormError('Password must be at least 8 characters.');
+      return;
+    }
+    setFormError('');
+    const resultAction = await dispatch(register(payload));
     if (register.fulfilled.match(resultAction)) {
       navigate('/login');
     }
@@ -36,6 +47,8 @@ function RegisterPage() {
             <input
               type="text"
               required
+              minLength={3}
+              autoComplete="username"
               className="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-primary focus:border-primary bg-gray-50 focus:bg-white transition-colors"
               value={formData.username}
               onChange={(e) => setFormData({ ...formData, username: e.target.value })}
@@ -46,6 +59,7 @@ function RegisterPage() {
             <input
               type="email"
               required
+              autoComplete="email"
               className="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-primary focus:border-primary bg-gray-50 focus:bg-white transition-colors"
               value={formData.email}
               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
@@ -56,11 +70,14 @@ function RegisterPage() {
             <input
               type="password"
               required
+              minLength={8}
+              autoComplete="new-password"
               className="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-primary focus:border-primary bg-gray-50 focus:bg-white transition-colors"
               value={formData.password}
               onChange={(e) => setFormData({ ...formData, password: e.target.value })}
             />
           </div>
+          {formError && <p className="text-sm text-red-600">{formError}</p>}
           <button
             type="submit"
             disabled={loading}

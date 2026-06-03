@@ -1,29 +1,29 @@
-import { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { FiShoppingCart, FiHeart, FiUser, FiSearch, FiMenu, FiX, FiLogOut, FiChevronDown, FiSun, FiMoon } from 'react-icons/fi';
-import { motion, AnimatePresence } from 'framer-motion';
-import { useSelector, useDispatch } from 'react-redux';
+import { useEffect, useState } from 'react';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
+import {
+  FiChevronDown,
+  FiHeart,
+  FiLogOut,
+  FiMenu,
+  FiMoon,
+  FiSearch,
+  FiShoppingCart,
+  FiSun,
+  FiUser,
+  FiX,
+} from 'react-icons/fi';
+import { AnimatePresence, motion } from 'framer-motion';
+import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../redux/slices/authSlice';
-import toast from 'react-hot-toast';
+import { STATIONERY_CATEGORIES } from '../data/stationeryCatalog';
+import NotificationBell from './NotificationBell';
 
 const navLinks = [
   { label: 'Home', to: '/' },
   { label: 'Products', to: '/products' },
-  { label: 'Wishlist', to: '/wishlist' },
 ];
 
-const CATEGORIES = [
-  'Notebooks',
-  'Pens & Pencils',
-  'Office Supplies',
-  'Art Materials',
-  'School Supplies',
-  'Eco-Friendly',
-  'Diaries',
-  'Craft Items',
-];
-
-const SEARCH_SUGGESTIONS = [
+const searchSuggestions = [
   'notebook',
   'planner',
   'fountain pen',
@@ -34,260 +34,326 @@ const SEARCH_SUGGESTIONS = [
 
 function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
   const [categoryOpen, setCategoryOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
   const [showSuggestions, setShowSuggestions] = useState(false);
-  const cartItems = useSelector(state => state.cart?.items || []);
-  const wishlistItems = useSelector(state => state.wishlist?.items || []);
-  const { isAuthenticated } = useSelector(state => state.auth);
+  const [darkMode, setDarkMode] = useState(localStorage.getItem('theme') === 'dark');
+
+  const cartItems = useSelector((state) => state.cart?.items || []);
+  const wishlistItems = useSelector((state) => state.wishlist?.items || []);
+  const { isAuthenticated } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [darkMode, setDarkMode] = useState(
-    localStorage.getItem('theme') === 'dark'
-  );
-
   useEffect(() => {
-    if (darkMode) {
-      document.documentElement.classList.add('dark');
-      localStorage.setItem('theme', 'dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-      localStorage.setItem('theme', 'light');
-    }
+    document.documentElement.classList.toggle('dark', darkMode);
+    localStorage.setItem('theme', darkMode ? 'dark' : 'light');
   }, [darkMode]);
 
-  const handleSearch = (e) => {
-    e.preventDefault();
-    if (searchQuery.trim()) {
-      navigate(`/products?search=${encodeURIComponent(searchQuery.trim())}`);
-      setSearchQuery('');
-    }
+  const handleSearch = (event) => {
+    event.preventDefault();
+    const query = searchQuery.trim();
+    if (!query) return;
+    navigate(`/products?search=${encodeURIComponent(query)}`);
+    setSearchQuery('');
+    setShowSuggestions(false);
+    setMobileOpen(false);
+  };
+
+  const goToCategory = (category) => {
+    navigate(`/products?search=${encodeURIComponent(category)}`);
+    setCategoryOpen(false);
+    setMobileOpen(false);
   };
 
   const handleLogout = () => {
     dispatch(logout());
+    setMobileOpen(false);
     navigate('/login');
   };
+
+  const navClass = ({ isActive }) => (
+    `rounded-xl px-3 py-2 text-sm font-semibold transition ${
+      isActive
+        ? 'bg-primary/10 text-primary'
+        : 'text-slate-600 hover:bg-slate-100 hover:text-primary'
+    }`
+  );
+
+  const Badge = ({ count, tone = 'accent' }) => (
+    count > 0 ? (
+      <span className={`absolute -right-2 -top-2 flex h-5 min-w-5 items-center justify-center rounded-full px-1 text-[10px] font-black ${
+        tone === 'danger' ? 'bg-red-500 text-white' : 'bg-accent text-slate-950'
+      }`}>
+        {count}
+      </span>
+    ) : null
+  );
 
   return (
     <>
       <motion.nav
-        initial={{ y: -80 }}
+        initial={{ y: -72 }}
         animate={{ y: 0 }}
-        transition={{ duration: 0.5, ease: 'easeOut' }}
-        className="fixed w-full top-0 left-0 z-50 bg-white/80 backdrop-blur-xl border-b border-gray-100 shadow-sm"
+        transition={{ duration: 0.45, ease: 'easeOut' }}
+        className="fixed left-0 top-0 z-50 w-full border-b border-slate-200/80 bg-white/90 shadow-sm backdrop-blur-xl"
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
-
-          {/* Logo */}
-          <Link to="/" className="flex-shrink-0 text-2xl font-extrabold tracking-tight text-primary">
-            Sri Thanam<span className="text-accent">Papers</span>
+        <div className="mx-auto flex h-16 max-w-7xl items-center gap-3 px-4 sm:px-6 lg:h-20 lg:px-8">
+          <Link to="/" className="flex min-w-0 flex-shrink-0 items-center" aria-label="Sri Thanam Papers home">
+            <span className="min-w-0 border-l-4 border-accent pl-3">
+              <span className="block truncate font-serif text-xl font-black leading-6 tracking-normal text-slate-950 sm:text-2xl">
+                Sri Thanam Papers
+              </span>
+              <span className="block text-[10px] font-black uppercase tracking-[0.24em] text-primary">
+                Premium Stationery
+              </span>
+            </span>
           </Link>
 
-          {/* Search — desktop */}
-          <div className="hidden md:flex flex-1 max-w-2xl relative">
-            <form onSubmit={handleSearch} className="w-full relative">
+          <div className="hidden items-center gap-1 md:flex">
+            {navLinks.map((link) => (
+              <NavLink key={link.to} to={link.to} className={navClass}>
+                {link.label}
+              </NavLink>
+            ))}
+          </div>
+
+          <div className="relative ml-auto hidden max-w-xl flex-1 lg:block">
+            <form onSubmit={handleSearch} className="relative">
+              <FiSearch className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
               <input
                 type="text"
                 value={searchQuery}
                 onFocus={() => setShowSuggestions(true)}
                 onBlur={() => setTimeout(() => setShowSuggestions(false), 150)}
-                onChange={e => { setSearchQuery(e.target.value); setShowSuggestions(true); }}
-                placeholder="Search notebooks, pens, supplies…"
-                className="w-full pl-11 pr-4 py-2.5 rounded-full border border-gray-200 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-primary/40 transition-shadow text-sm"
+                onChange={(event) => {
+                  setSearchQuery(event.target.value);
+                  setShowSuggestions(true);
+                }}
+                placeholder="Search notebooks, pens, paper..."
+                className="focus-ring w-full rounded-2xl border border-slate-200 bg-slate-50 py-3 pl-11 pr-4 text-sm font-medium text-slate-900 transition focus:border-primary/30 focus:bg-white"
               />
-              <FiSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4" />
             </form>
-            {showSuggestions && searchQuery.trim().length > 0 && (
-              <div className="absolute top-14 left-0 w-full bg-white rounded-3xl border border-gray-200 shadow-xl z-20 overflow-hidden">
-                {SEARCH_SUGGESTIONS.filter((term) => term.includes(searchQuery.toLowerCase())).map((term) => (
-                  <button
-                    key={term}
-                    type="button"
-                    onMouseDown={() => { navigate(`/products?search=${encodeURIComponent(term)}`); setSearchQuery(''); }}
-                    className="w-full text-left px-4 py-3 hover:bg-gray-100 text-sm text-gray-700"
-                  >
-                    {term}
-                  </button>
-                ))}
-                <div className="px-4 py-3 border-t border-gray-100 text-xs uppercase tracking-[0.2em] text-gray-400">Popular searches</div>
-              </div>
-            )}
+
+            <AnimatePresence>
+              {showSuggestions && searchQuery.trim().length > 0 && (
+                <motion.div
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 8 }}
+                  className="absolute left-0 top-14 z-20 w-full overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-2xl"
+                >
+                  {searchSuggestions
+                    .filter((term) => term.includes(searchQuery.toLowerCase()))
+                    .map((term) => (
+                      <button
+                        key={term}
+                        type="button"
+                        onMouseDown={() => {
+                          navigate(`/products?search=${encodeURIComponent(term)}`);
+                          setSearchQuery('');
+                        }}
+                        className="block w-full px-4 py-3 text-left text-sm font-medium text-slate-700 transition hover:bg-slate-50 hover:text-primary"
+                      >
+                        {term}
+                      </button>
+                    ))}
+                  <p className="border-t border-slate-100 px-4 py-3 text-xs font-bold uppercase tracking-[0.18em] text-slate-400">
+                    Popular searches
+                  </p>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
 
-          {/* Desktop nav icons */}
-          <div className="hidden md:flex items-center gap-5 relative">
+          <div className="hidden items-center gap-2 md:flex">
             <div className="relative">
               <button
                 type="button"
                 aria-expanded={categoryOpen}
                 aria-controls="category-menu"
-                onClick={() => setCategoryOpen((prev) => !prev)}
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-gray-200 bg-white text-sm font-medium text-gray-700 hover:border-primary hover:text-primary transition-colors"
+                onClick={() => setCategoryOpen((open) => !open)}
+                className="focus-ring inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm font-bold text-slate-700 transition hover:border-primary/30 hover:text-primary"
               >
-                Categories <FiChevronDown className="w-4 h-4" />
+                Categories <FiChevronDown />
               </button>
-              {categoryOpen && (
-                <div id="category-menu" className="absolute mt-2 w-60 bg-white rounded-3xl border border-gray-200 shadow-xl z-20 overflow-hidden">
-                  {CATEGORIES.map((category) => (
+
+              <AnimatePresence>
+                {categoryOpen && (
+                  <motion.div
+                    id="category-menu"
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 8 }}
+                    className="absolute right-0 mt-3 w-64 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-2xl"
+                  >
+                    {STATIONERY_CATEGORIES.map((category) => (
+                      <button
+                        key={category}
+                        type="button"
+                        onClick={() => goToCategory(category)}
+                        className="block w-full px-4 py-3 text-left text-sm font-semibold text-slate-700 transition hover:bg-primary/5 hover:text-primary"
+                      >
+                        {category}
+                      </button>
+                    ))}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+
+            <button
+              type="button"
+              aria-label={darkMode ? 'Switch to light mode' : 'Switch to dark mode'}
+              onClick={() => setDarkMode((value) => !value)}
+              className="focus-ring inline-flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 text-slate-600 transition hover:border-primary/30 hover:text-primary"
+            >
+              {darkMode ? <FiSun className="text-amber-500" /> : <FiMoon />}
+            </button>
+
+            <Link to="/wishlist" aria-label="Go to wishlist" className="focus-ring relative inline-flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 text-slate-600 transition hover:border-red-200 hover:text-red-500">
+              <FiHeart />
+              <Badge count={wishlistItems.length} tone="danger" />
+            </Link>
+
+            <Link to="/cart" aria-label="Go to cart" className="focus-ring relative inline-flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 text-slate-600 transition hover:border-primary/30 hover:text-primary">
+              <FiShoppingCart />
+              <Badge count={cartItems.length} />
+            </Link>
+
+            {isAuthenticated ? (
+              <>
+                <NotificationBell />
+                <Link to="/profile" aria-label="Go to profile" className="focus-ring inline-flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 text-slate-600 transition hover:border-primary/30 hover:text-primary">
+                  <FiUser />
+                </Link>
+                <button
+                  type="button"
+                  aria-label="Logout"
+                  onClick={handleLogout}
+                  className="focus-ring inline-flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 text-slate-500 transition hover:border-red-200 hover:text-red-500"
+                >
+                  <FiLogOut />
+                </button>
+              </>
+            ) : (
+              <div className="flex items-center gap-2">
+                <Link to="/login" className="rounded-xl px-3 py-2 text-sm font-bold text-slate-700 transition hover:bg-slate-100 hover:text-primary">
+                  Login
+                </Link>
+                <Link to="/register" className="rounded-xl bg-primary px-4 py-2.5 text-sm font-black text-white shadow-lg shadow-primary/20 transition hover:bg-green-800">
+                  Register
+                </Link>
+              </div>
+            )}
+          </div>
+
+          <button
+            type="button"
+            aria-expanded={mobileOpen}
+            aria-label={mobileOpen ? 'Close mobile menu' : 'Open mobile menu'}
+            onClick={() => setMobileOpen((open) => !open)}
+            className="focus-ring ml-auto inline-flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 text-slate-700 md:hidden"
+          >
+            {mobileOpen ? <FiX /> : <FiMenu />}
+          </button>
+        </div>
+      </motion.nav>
+
+      <AnimatePresence>
+        {mobileOpen && (
+          <>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 z-40 bg-slate-950/40 backdrop-blur-sm md:hidden"
+              onClick={() => setMobileOpen(false)}
+            />
+            <motion.aside
+              initial={{ x: '100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '100%' }}
+              transition={{ duration: 0.28, ease: 'easeOut' }}
+              className="fixed inset-y-0 right-0 z-50 flex w-[min(22rem,calc(100vw-1rem))] flex-col overflow-y-auto bg-white px-5 pb-8 pt-20 shadow-2xl md:hidden"
+            >
+              <form onSubmit={handleSearch} className="relative mb-5">
+                <FiSearch className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={(event) => setSearchQuery(event.target.value)}
+                  placeholder="Search products..."
+                  className="focus-ring w-full rounded-2xl border border-slate-200 bg-slate-50 py-3 pl-11 pr-4 text-sm font-medium text-slate-900"
+                />
+              </form>
+
+              <nav className="flex flex-col gap-1">
+                {navLinks.map((link) => (
+                  <NavLink
+                    key={link.to}
+                    to={link.to}
+                    onClick={() => setMobileOpen(false)}
+                    className={navClass}
+                  >
+                    {link.label}
+                  </NavLink>
+                ))}
+                <NavLink to="/cart" onClick={() => setMobileOpen(false)} className={navClass}>
+                  Cart {cartItems.length > 0 && <span className="ml-2 text-accent">({cartItems.length})</span>}
+                </NavLink>
+                <NavLink to="/profile" onClick={() => setMobileOpen(false)} className={navClass}>
+                  Profile
+                </NavLink>
+              </nav>
+
+              <div className="mt-6 border-t border-slate-100 pt-5">
+                <p className="mb-3 text-xs font-black uppercase tracking-[0.18em] text-slate-400">Categories</p>
+                <div className="grid grid-cols-1 gap-2">
+                  {STATIONERY_CATEGORIES.map((category) => (
                     <button
                       key={category}
                       type="button"
-                      onClick={() => { navigate(`/products?search=${encodeURIComponent(category)}`); setCategoryOpen(false); }}
-                      className="w-full text-left px-4 py-3 text-sm text-gray-700 hover:bg-gray-100"
+                      onClick={() => goToCategory(category)}
+                      className="rounded-xl bg-slate-50 px-4 py-3 text-left text-sm font-semibold text-slate-700 transition hover:bg-primary/5 hover:text-primary"
                     >
                       {category}
                     </button>
                   ))}
                 </div>
-              )}
-            </div>
-            <button
-              type="button"
-              aria-label={darkMode ? 'Switch to light mode' : 'Switch to dark mode'}
-              onClick={() => setDarkMode(!darkMode)}
-              className="text-gray-600 hover:text-primary transition-colors focus:outline-none"
-              title="Toggle theme"
-            >
-              {darkMode ? <FiSun className="w-5 h-5 text-amber-500 animate-pulse" /> : <FiMoon className="w-5 h-5" />}
-            </button>
-<Link to="/wishlist" aria-label="Go to wishlist" className="relative text-gray-600 hover:text-primary transition-colors">
-                <FiHeart className="w-5 h-5" />
-                {wishlistItems.length > 0 && (
-                  <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full w-4 h-4 flex items-center justify-center">
-                    {wishlistItems.length}
-                  </span>
-                )}
-              </Link>
-              <Link to="/cart" aria-label="Go to cart" className="relative text-gray-600 hover:text-primary transition-colors">
-              <FiShoppingCart className="w-5 h-5" />
-              {cartItems.length > 0 && (
-                <span className="absolute -top-2 -right-2 bg-accent text-white text-xs font-bold rounded-full w-4 h-4 flex items-center justify-center">
-                  {cartItems.length}
-                </span>
-              )}
-            </Link>
-
-            {isAuthenticated ? (
-              <div className="flex items-center gap-3">
-                <Link to="/profile" className="text-gray-600 hover:text-primary transition-colors">
-                  <FiUser className="w-5 h-5" />
-                </Link>
-                <button type="button" aria-label="Logout" onClick={handleLogout} className="text-gray-500 hover:text-red-500 transition-colors">
-                  <FiLogOut className="w-5 h-5" />
-                </button>
               </div>
-            ) : (
-              <div className="flex items-center gap-3">
-                <Link to="/login" className="text-sm font-semibold text-gray-700 hover:text-primary transition-colors">Login</Link>
-                <Link to="/register" className="text-sm font-bold bg-primary text-white px-4 py-2 rounded-full hover:bg-green-800 transition-colors shadow-sm">Register</Link>
-              </div>
-            )}
-          </div>
 
-          {/* Mobile hamburger */}
-          <button
-            type="button"
-            aria-expanded={mobileOpen}
-            aria-label={mobileOpen ? 'Close mobile menu' : 'Open mobile menu'}
-            className="md:hidden text-gray-700 hover:text-primary transition-colors"
-            onClick={() => setMobileOpen(!mobileOpen)}
-          >
-            {mobileOpen ? <FiX className="w-6 h-6" /> : <FiMenu className="w-6 h-6" />}
-          </button>
-        </div>
-      </motion.nav>
-
-      {/* Mobile Menu Drawer */}
-      <AnimatePresence>
-        {mobileOpen && (
-          <motion.div
-            initial={{ opacity: 0, x: '100%' }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: '100%' }}
-            transition={{ duration: 0.3, ease: 'easeInOut' }}
-            className="fixed inset-y-0 right-0 z-40 w-72 bg-white shadow-2xl flex flex-col pt-20 pb-8 px-6"
-          >
-            {/* Mobile Search */}
-            <form onSubmit={handleSearch} className="relative mb-6">
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={e => setSearchQuery(e.target.value)}
-                placeholder="Search products…"
-                className="w-full pl-10 pr-4 py-3 rounded-full border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/40 bg-gray-50 text-sm"
-              />
-              <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-            </form>
-
-            <nav className="flex flex-col gap-1 flex-grow">
-              {navLinks.map(link => (
-                <Link
-                  key={link.to}
-                  to={link.to}
-                  onClick={() => setMobileOpen(false)}
-                  className="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-700 hover:bg-primary/5 hover:text-primary font-medium transition-colors"
+              <div className="mt-auto border-t border-slate-100 pt-5">
+                <button
+                  type="button"
+                  onClick={() => setDarkMode((value) => !value)}
+                  className="mb-3 flex w-full items-center justify-center gap-2 rounded-xl border border-slate-200 py-3 text-sm font-bold text-slate-700"
                 >
-                  {link.label}
-                </Link>
-              ))}
-              <Link
-                to="/cart"
-                onClick={() => setMobileOpen(false)}
-                className="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-700 hover:bg-primary/5 hover:text-primary font-medium transition-colors"
-              >
-                Cart {cartItems.length > 0 && <span className="ml-auto bg-accent text-white text-xs font-bold rounded-full px-2 py-0.5">{cartItems.length}</span>}
-              </Link>
-              <button
-                type="button"
-                aria-label={darkMode ? 'Switch to light mode' : 'Switch to dark mode'}
-                onClick={() => setDarkMode(!darkMode)}
-                className="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-700 hover:bg-primary/5 hover:text-primary font-medium transition-colors text-left"
-              >
-                {darkMode ? (
-                  <>
-                    <FiSun className="text-amber-500" /> Light Mode
-                  </>
-                ) : (
-                  <>
-                    <FiMoon /> Dark Mode
-                  </>
-                )}
-              </button>
-            </nav>
+                  {darkMode ? <FiSun className="text-amber-500" /> : <FiMoon />}
+                  {darkMode ? 'Light mode' : 'Dark mode'}
+                </button>
 
-            <div className="mt-auto pt-6 border-t border-gray-100">
-              {isAuthenticated ? (
-                <div className="flex flex-col gap-3">
-                  <Link to="/profile" onClick={() => setMobileOpen(false)} className="flex items-center gap-2 px-4 py-3 rounded-xl text-gray-700 hover:bg-primary/5 font-medium">
-                    <FiUser /> My Profile
-                  </Link>
-                  <button type="button" aria-label="Logout" onClick={() => { handleLogout(); setMobileOpen(false); }} className="flex items-center gap-2 px-4 py-3 rounded-xl text-red-500 hover:bg-red-50 font-medium">
+                {isAuthenticated ? (
+                  <button
+                    type="button"
+                    onClick={handleLogout}
+                    className="flex w-full items-center justify-center gap-2 rounded-xl bg-red-50 py-3 text-sm font-bold text-red-600"
+                  >
                     <FiLogOut /> Logout
                   </button>
-                </div>
-              ) : (
-                <div className="flex flex-col gap-3">
-                  <Link to="/login" onClick={() => setMobileOpen(false)} className="text-center py-3 rounded-full font-semibold border border-primary text-primary hover:bg-primary/5 transition-colors">Login</Link>
-                  <Link to="/register" onClick={() => setMobileOpen(false)} className="text-center py-3 rounded-full font-bold bg-primary text-white hover:bg-green-800 transition-colors">Register</Link>
-                </div>
-              )}
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* Mobile overlay */}
-      <AnimatePresence>
-        {mobileOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-30 bg-black/30 backdrop-blur-sm md:hidden"
-            onClick={() => setMobileOpen(false)}
-          />
+                ) : (
+                  <div className="grid grid-cols-2 gap-3">
+                    <Link to="/login" onClick={() => setMobileOpen(false)} className="rounded-xl border border-primary py-3 text-center text-sm font-bold text-primary">
+                      Login
+                    </Link>
+                    <Link to="/register" onClick={() => setMobileOpen(false)} className="rounded-xl bg-primary py-3 text-center text-sm font-black text-white">
+                      Register
+                    </Link>
+                  </div>
+                )}
+              </div>
+            </motion.aside>
+          </>
         )}
       </AnimatePresence>
     </>

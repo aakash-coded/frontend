@@ -1,5 +1,3 @@
-import { motion } from 'framer-motion';
-
 function SkeletonCard() {
   return (
     <div className="bg-white rounded-2xl p-4 border border-gray-100 animate-pulse">

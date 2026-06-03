@@ -1,44 +1,33 @@
 import { motion } from 'framer-motion';
-import { FiXCircle } from 'react-icons/fi';
+import { FiShoppingBag } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 
 function PaymentCancelPage() {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
+    <div className="flex min-h-screen items-center justify-center bg-slate-50 px-4">
       <motion.div
-        initial={{ opacity: 0, scale: 0.8 }}
+        initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ type: 'spring', duration: 0.6 }}
-        className="bg-white rounded-3xl shadow-xl p-12 text-center max-w-lg w-full"
+        className="w-full max-w-lg rounded-2xl border border-slate-200 bg-white p-8 text-center shadow-xl sm:p-12"
       >
-        <motion.div
-          initial={{ scale: 0 }}
-          animate={{ scale: 1 }}
-          transition={{ delay: 0.2, type: 'spring', stiffness: 200 }}
-          className="w-24 h-24 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-6"
-        >
-          <FiXCircle className="text-red-500 text-5xl" />
-        </motion.div>
-        <h1 className="text-3xl font-bold text-gray-900 mb-3">Payment Cancelled</h1>
-        <p className="text-gray-500 mb-8">Your payment process was cancelled or failed. Your order has not been completed.</p>
-        
-        <div className="flex gap-4 justify-center">
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            onClick={() => navigate('/checkout')}
-            className="bg-primary text-white px-6 py-3 rounded-xl font-semibold hover:bg-green-800 transition-colors"
-          >
-            Try Again
-          </motion.button>
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            onClick={() => navigate('/cart')}
-            className="border-2 border-primary text-primary px-6 py-3 rounded-xl font-semibold hover:bg-primary hover:text-white transition-colors"
-          >
-            Return to Cart
-          </motion.button>
+        <div className="mx-auto mb-6 flex h-24 w-24 items-center justify-center rounded-3xl bg-primary/10">
+          <FiShoppingBag className="text-5xl text-primary" />
+        </div>
+        <h1 className="mb-3 text-3xl font-black text-slate-950">Checkout Not Completed</h1>
+        <p className="mb-8 text-slate-500">
+          Sri Thanam Papers currently accepts Cash on Delivery. Return to checkout to place your order without online payment.
+        </p>
+
+        <div className="flex flex-col justify-center gap-3 sm:flex-row">
+          <button type="button" onClick={() => navigate('/checkout')} className="rounded-xl bg-primary px-6 py-3 font-black text-white transition hover:bg-green-800">
+            Return to Checkout
+          </button>
+          <button type="button" onClick={() => navigate('/cart')} className="rounded-xl border border-primary px-6 py-3 font-black text-primary transition hover:bg-primary hover:text-white">
+            View Cart
+          </button>
         </div>
       </motion.div>
     </div>

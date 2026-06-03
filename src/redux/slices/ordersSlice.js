@@ -41,10 +41,26 @@ export const placeOrder = createAsyncThunk('orders/place', async (orderData, thu
     const res = await axios.post(API_URL, orderData, {
       headers: { Authorization: `Bearer ${token}` },
     });
-    toast.success('🎉 Order placed successfully!');
+    toast.success('Order placed successfully!');
     return res.data;
   } catch (err) {
     const errMsg = getErrorMessage(err, 'Failed to place order. Please try again.');
+    toast.error(errMsg);
+    return thunkAPI.rejectWithValue(err.response?.data || errMsg);
+  }
+});
+
+export const cancelOrder = createAsyncThunk('orders/cancel', async ({ orderId, reason = '' }, thunkAPI) => {
+  const state = thunkAPI.getState();
+  const token = state.auth.token;
+  try {
+    const res = await axios.post(`${API_URL}${orderId}/cancel/`, { reason }, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    toast.success('Order cancelled successfully.');
+    return res.data;
+  } catch (err) {
+    const errMsg = getErrorMessage(err, 'Failed to cancel order. Please try again.');
     toast.error(errMsg);
     return thunkAPI.rejectWithValue(err.response?.data || errMsg);
   }
@@ -58,6 +74,7 @@ const ordersSlice = createSlice({
     placing: false,
     error: null,
     lastOrder: null,
+    cancelling: false,
   },
   reducers: {
     clearLastOrder: (state) => {
@@ -78,7 +95,18 @@ const ordersSlice = createSlice({
         state.lastOrder = action.payload;
         state.orders.unshift(action.payload);
       })
-      .addCase(placeOrder.rejected, (state) => { state.placing = false; });
+      .addCase(placeOrder.rejected, (state) => { state.placing = false; })
+      .addCase(cancelOrder.pending, (state) => { state.cancelling = true; })
+      .addCase(cancelOrder.fulfilled, (state, action) => {
+        state.cancelling = false;
+        state.orders = state.orders.map((order) => (
+          order.id === action.payload.id ? action.payload : order
+        ));
+      })
+      .addCase(cancelOrder.rejected, (state, action) => {
+        state.cancelling = false;
+        state.error = action.payload;
+      });
   },
 });
 

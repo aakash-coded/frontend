@@ -12,7 +12,11 @@ function LoginPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const resultAction = await dispatch(login(formData));
+    const username = formData.username.trim();
+    if (!username || !formData.password) {
+      return;
+    }
+    const resultAction = await dispatch(login({ ...formData, username }));
     if (login.fulfilled.match(resultAction)) {
       navigate('/');
     }
@@ -36,6 +40,7 @@ function LoginPage() {
             <input
               type="text"
               required
+              autoComplete="username"
               placeholder="Email or username"
               className="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-primary focus:border-primary bg-gray-50 focus:bg-white transition-colors"
               value={formData.username}
@@ -52,6 +57,7 @@ function LoginPage() {
             <input
               type="password"
               required
+              autoComplete="current-password"
               className="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-primary focus:border-primary bg-gray-50 focus:bg-white transition-colors"
               value={formData.password}
               onChange={(e) => setFormData({ ...formData, password: e.target.value })}
