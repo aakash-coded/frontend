@@ -34,6 +34,7 @@ function getPublicProductImageUrl(src) {
 function isProjectMedia(src) {
   const value = String(src || '').trim();
   return value.startsWith('/media/')
+    || value.startsWith('/products/')
     || value.includes('/media/')
     || value.startsWith('media/')
     || value.startsWith('uploads/')
