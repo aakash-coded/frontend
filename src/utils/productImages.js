@@ -3,24 +3,32 @@ import { getProductPlaceholderUrl as buildCatalogImageUrl } from '../data/statio
 
 const BACKEND_BASE_URL = API_BASE_URL;
 const DEFAULT_IMAGE_URL = buildCatalogImageUrl('Premium Stationery', 'Stationery');
+const PUBLIC_PRODUCTS_PATH = '/products/';
 
 export function getProductPlaceholderUrl(title, categoryName) {
   return buildCatalogImageUrl(title, categoryName);
 }
 
-function normalizeMediaUrl(src) {
+function getPublicProductImageUrl(src) {
   if (!src) return '';
   const trimmed = String(src).trim();
 
-  if (trimmed.startsWith('/')) {
-    return `${BACKEND_BASE_URL}${trimmed}`;
+  if (trimmed.startsWith('data:image/')) {
+    return trimmed;
   }
 
-  if (trimmed.startsWith('media/') || trimmed.startsWith('uploads/') || trimmed.startsWith('products/')) {
-    return `${BACKEND_BASE_URL}/${trimmed}`;
+  try {
+    const url = new URL(trimmed, BACKEND_BASE_URL || 'http://localhost');
+    const parts = url.pathname.split('/').filter(Boolean);
+    const productsIndex = parts.lastIndexOf('products');
+    const fileName = productsIndex >= 0 ? parts[productsIndex + 1] : parts.at(-1);
+    return fileName ? `${PUBLIC_PRODUCTS_PATH}${encodeURIComponent(fileName)}` : '';
+  } catch {
+    const parts = trimmed.split('/').filter(Boolean);
+    const productsIndex = parts.lastIndexOf('products');
+    const fileName = productsIndex >= 0 ? parts[productsIndex + 1] : parts.at(-1);
+    return fileName ? `${PUBLIC_PRODUCTS_PATH}${encodeURIComponent(fileName)}` : '';
   }
-
-  return trimmed;
 }
 
 function isProjectMedia(src) {
@@ -41,15 +49,15 @@ export function getProductImageUrl(product) {
   if (!product) return DEFAULT_IMAGE_URL;
 
   if (product.image_url && isProjectMedia(product.image_url)) {
-    return normalizeMediaUrl(product.image_url);
+    return getPublicProductImageUrl(product.image_url);
   }
 
   if (typeof product.image === 'string' && isProjectMedia(product.image)) {
-    return normalizeMediaUrl(product.image);
+    return getPublicProductImageUrl(product.image);
   }
 
   if (product.image && typeof product.image === 'object' && product.image.url && isProjectMedia(product.image.url)) {
-    return normalizeMediaUrl(product.image.url);
+    return getPublicProductImageUrl(product.image.url);
   }
 
   return getProductPlaceholderUrl(product.title, getProductCategory(product));
