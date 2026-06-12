@@ -100,6 +100,26 @@ svg {
   box-shadow: 0 0 0 3px rgba(242, 184, 75, 0.45);
 }
 
+.landing-hero-swiper .swiper-pagination {
+  bottom: 12px !important;
+}
+
+.landing-hero-swiper .swiper-pagination-bullet {
+  background: rgba(255, 255, 255, 0.55);
+  opacity: 1;
+}
+
+.landing-hero-swiper .swiper-pagination-bullet-active {
+  background: #0ea5e9;
+}
+
+@media (max-width: 639px) {
+  .landing-hero-swiper .swiper-button-next,
+  .landing-hero-swiper .swiper-button-prev {
+    display: none;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

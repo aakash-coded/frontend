@@ -89,23 +89,23 @@ function LandingPage() {
           autoplay={{ delay: 5000, disableOnInteraction: false }}
           pagination={{ clickable: true }}
           navigation
-          className="max-w-full"
+          className="landing-hero-swiper max-w-full"
         >
           {heroSlides.map((slide, index) => (
             <SwiperSlide key={slide.title}>
-              <div className="relative flex min-h-[calc(100svh-4rem)] items-center py-10 sm:min-h-[640px] sm:py-16 lg:min-h-[700px]">
+              <div className="relative flex min-h-0 items-center py-8 pb-12 sm:min-h-[640px] sm:py-16 lg:min-h-[700px]">
                 <div className="absolute inset-0">
                   <div className="h-full w-full bg-[radial-gradient(circle_at_top_right,rgba(251,191,36,0.22),transparent_32%),linear-gradient(135deg,#020617_0%,#0f172a_56%,#064e3b_100%)]" />
                 </div>
 
                 <div className="relative z-10 mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
-                  <div className="grid items-center gap-8 lg:grid-cols-[1.04fr_0.96fr] lg:gap-12">
-                    <div className="max-w-3xl text-left">
+                  <div className="grid items-center gap-6 sm:gap-8 lg:grid-cols-[1.04fr_0.96fr] lg:gap-12">
+                    <div className="mx-auto max-w-md text-center sm:max-w-3xl sm:text-left">
                       <motion.span
                         initial={{ opacity: 0, y: -10 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.5, delay: index * 0.1 }}
-                        className="mb-4 inline-block rounded-full border border-accent/40 bg-accent/15 px-3 py-1.5 text-xs font-black uppercase tracking-[0.14em] text-accent sm:mb-5 sm:px-4 sm:py-2 sm:text-sm sm:tracking-[0.18em]"
+                        className="mb-3 inline-block rounded-full border border-accent/40 bg-accent/15 px-3 py-1.5 text-[11px] font-black uppercase tracking-[0.12em] text-accent sm:mb-5 sm:px-4 sm:py-2 sm:text-sm sm:tracking-[0.18em]"
                       >
                         {slide.badge}
                       </motion.span>
@@ -113,7 +113,7 @@ function LandingPage() {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.7, delay: 0.2 + index * 0.05 }}
-                        className="mb-4 text-3xl font-black leading-tight tracking-normal sm:mb-6 sm:text-6xl lg:text-7xl"
+                        className="mb-3 text-2xl font-black leading-tight tracking-normal sm:mb-6 sm:text-6xl lg:text-7xl"
                       >
                         {slide.title}
                       </motion.h1>
@@ -121,7 +121,7 @@ function LandingPage() {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.7, delay: 0.3 + index * 0.05 }}
-                        className="mb-6 max-w-2xl text-sm leading-7 text-slate-100 sm:mb-8 sm:text-xl sm:leading-8"
+                        className="mx-auto mb-5 max-w-sm text-sm leading-6 text-slate-100 sm:mx-0 sm:mb-8 sm:max-w-2xl sm:text-xl sm:leading-8"
                       >
                         {slide.subtitle}
                       </motion.p>
@@ -129,12 +129,12 @@ function LandingPage() {
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.7, delay: 0.4 + index * 0.05 }}
-                        className="flex flex-col gap-3 sm:flex-row sm:gap-4"
+                        className="grid grid-cols-1 gap-3 min-[390px]:grid-cols-2 sm:flex sm:flex-row sm:gap-4"
                       >
-                        <Link to={slide.link} className="rounded-xl bg-accent px-6 py-3 text-center font-black text-slate-950 shadow-xl shadow-accent/25 transition hover:bg-amber-300 sm:rounded-2xl sm:px-8 sm:py-4">
+                        <Link to={slide.link} className="rounded-xl bg-accent px-5 py-3 text-center text-sm font-black text-slate-950 shadow-xl shadow-accent/25 transition hover:bg-amber-300 sm:rounded-2xl sm:px-8 sm:py-4 sm:text-base">
                           {slide.cta}
                         </Link>
-                        <Link to="/products" className="rounded-xl border border-white/30 px-6 py-3 text-center font-bold text-white transition hover:bg-white/10 sm:rounded-2xl sm:px-8 sm:py-4">
+                        <Link to="/products" className="rounded-xl border border-white/30 px-5 py-3 text-center text-sm font-bold text-white transition hover:bg-white/10 sm:rounded-2xl sm:px-8 sm:py-4 sm:text-base">
                           Browse Products
                         </Link>
                       </motion.div>
@@ -163,7 +163,7 @@ function LandingPage() {
                       initial={{ opacity: 0, x: 24, scale: 0.98 }}
                       animate={{ opacity: 1, x: 0, scale: 1 }}
                       transition={{ duration: 0.7, delay: 0.25 + index * 0.05 }}
-                      className="relative mx-auto w-full max-w-xs sm:max-w-lg lg:max-w-none"
+                      className="relative mx-auto w-full max-w-[17rem] sm:max-w-lg lg:max-w-none"
                     >
                       <div className="absolute -inset-3 rounded-3xl bg-white/10 blur-2xl sm:-inset-5 sm:rounded-[2rem]" />
                       <div className="relative overflow-hidden rounded-3xl border border-white/15 bg-white p-2 shadow-2xl sm:rounded-[2rem] sm:p-3">
