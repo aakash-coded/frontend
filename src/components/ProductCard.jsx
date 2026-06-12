@@ -83,35 +83,35 @@ function ProductCard({
       transition={{ duration: 0.25 }}
       className="group flex h-full flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/25 hover:shadow-xl sm:rounded-2xl"
     >
-      <Link to={productPath} className="relative block aspect-[16/10] overflow-hidden bg-slate-100 sm:aspect-[4/3]">
+      <Link to={productPath} className="relative block aspect-square overflow-hidden bg-slate-100 sm:aspect-[4/3]">
         <ProductImage
           product={product}
           containerClassName="h-full"
           className="transition-transform duration-700 group-hover:scale-110"
         />
-        <span className="absolute left-2 top-2 rounded-full bg-white/90 px-2.5 py-1 text-[11px] font-bold text-slate-700 shadow-sm backdrop-blur sm:left-3 sm:top-3 sm:px-3 sm:text-xs">
+        <span className="absolute left-2 top-2 max-w-[calc(100%-1rem)] truncate rounded-full bg-white/90 px-2 py-0.5 text-[10px] font-bold text-slate-700 shadow-sm backdrop-blur sm:left-3 sm:top-3 sm:px-3 sm:py-1 sm:text-xs">
           {product.category_name || 'Stationery'}
         </span>
         {product.is_featured && (
-          <span className="absolute bottom-2 left-2 rounded-full bg-accent px-2.5 py-1 text-[11px] font-black text-slate-950 shadow-sm sm:bottom-3 sm:left-3 sm:px-3 sm:text-xs">
+          <span className="absolute bottom-2 left-2 rounded-full bg-accent px-2 py-0.5 text-[10px] font-black text-slate-950 shadow-sm sm:bottom-3 sm:left-3 sm:px-3 sm:py-1 sm:text-xs">
             Featured
           </span>
         )}
       </Link>
 
-      <div className="flex flex-1 flex-col p-4 sm:p-5">
-        <Link to={productPath} className="line-clamp-2 text-[15px] font-bold leading-snug text-slate-950 transition-colors hover:text-primary sm:text-base">
+      <div className="flex flex-1 flex-col p-3 sm:p-5">
+        <Link to={productPath} className="line-clamp-2 text-sm font-bold leading-snug text-slate-950 transition-colors hover:text-primary sm:text-base">
           {product.title}
         </Link>
-        <p className="mt-2 line-clamp-2 text-sm leading-6 text-slate-500 sm:mt-3">{description}</p>
+        <p className="mt-2 hidden text-sm leading-6 text-slate-500 sm:mt-3 sm:line-clamp-2 sm:block">{description}</p>
 
-        <div className="mt-auto flex items-center justify-between gap-3 pt-4 sm:pt-5">
-          <p className="text-lg font-black text-primary sm:text-xl">{formatCurrency(product.price)}</p>
-          <div className="flex items-center gap-2">
+        <div className="mt-auto flex items-center justify-between gap-2 pt-3 sm:gap-3 sm:pt-5">
+          <p className="text-base font-black text-primary sm:text-xl">{formatCurrency(product.price)}</p>
+          <div className="flex items-center gap-1.5 sm:gap-2">
             <button
               type="button"
               onClick={(event) => onAddToWishlist?.(event, product)}
-              className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 text-slate-600 transition hover:border-red-200 hover:bg-red-50 hover:text-red-500"
+              className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 text-slate-600 transition hover:border-red-200 hover:bg-red-50 hover:text-red-500 sm:h-10 sm:w-10 sm:rounded-xl"
               aria-label="Add to wishlist"
             >
               <FiHeart />
@@ -119,7 +119,7 @@ function ProductCard({
             <button
               type="button"
               onClick={(event) => onAddToCart?.(event, product)}
-              className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-white shadow-lg shadow-primary/20 transition hover:bg-green-800"
+              className="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-primary text-white shadow-lg shadow-primary/20 transition hover:bg-green-800 sm:h-10 sm:w-10 sm:rounded-xl"
               aria-label="Add to cart"
             >
               <FiShoppingCart />

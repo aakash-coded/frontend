@@ -325,7 +325,7 @@ function ProductsPage() {
                 </button>
               </motion.div>
             ) : (
-              <motion.div layout className={`grid gap-4 sm:gap-6 ${viewMode === 'grid' ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3' : 'grid-cols-1'}`}>
+              <motion.div layout className={`grid gap-3 sm:gap-6 ${viewMode === 'grid' ? 'grid-cols-2 sm:grid-cols-2 lg:grid-cols-3' : 'grid-cols-1'}`}>
                 <AnimatePresence mode="popLayout">
                   {displayed.map((product) => (
                     <ProductCard

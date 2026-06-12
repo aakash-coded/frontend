@@ -193,11 +193,11 @@ function LandingPage() {
           </div>
 
           {loading ? (
-            <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-4">
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-2 sm:gap-8 md:grid-cols-4">
               {[1, 2, 3, 4].map((item) => <div key={item} className="h-80 animate-pulse rounded-2xl bg-slate-200" />)}
             </div>
           ) : (
-            <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-4">
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-2 sm:gap-8 md:grid-cols-4">
               {featuredProducts.map((product) => (
                 <ProductCard
                   key={product.id}
@@ -221,7 +221,7 @@ function LandingPage() {
             <Link to="/products" className="text-sm font-black text-primary hover:underline">View All -&gt;</Link>
           </div>
 
-          <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-4">
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-2 sm:gap-8 md:grid-cols-4">
             {newArrivals.map((product) => (
               <ProductCard
                 key={product.id}
