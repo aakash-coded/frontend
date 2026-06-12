@@ -81,32 +81,32 @@ function ProductCard({
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: 18 }}
       transition={{ duration: 0.25 }}
-      className="group flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/25 hover:shadow-xl"
+      className="group flex h-full flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/25 hover:shadow-xl sm:rounded-2xl"
     >
-      <Link to={productPath} className="relative block aspect-[4/3] overflow-hidden bg-slate-100">
+      <Link to={productPath} className="relative block aspect-[16/10] overflow-hidden bg-slate-100 sm:aspect-[4/3]">
         <ProductImage
           product={product}
           containerClassName="h-full"
           className="transition-transform duration-700 group-hover:scale-110"
         />
-        <span className="absolute left-3 top-3 rounded-full bg-white/90 px-3 py-1 text-xs font-bold text-slate-700 shadow-sm backdrop-blur">
+        <span className="absolute left-2 top-2 rounded-full bg-white/90 px-2.5 py-1 text-[11px] font-bold text-slate-700 shadow-sm backdrop-blur sm:left-3 sm:top-3 sm:px-3 sm:text-xs">
           {product.category_name || 'Stationery'}
         </span>
         {product.is_featured && (
-          <span className="absolute bottom-3 left-3 rounded-full bg-accent px-3 py-1 text-xs font-black text-slate-950 shadow-sm">
+          <span className="absolute bottom-2 left-2 rounded-full bg-accent px-2.5 py-1 text-[11px] font-black text-slate-950 shadow-sm sm:bottom-3 sm:left-3 sm:px-3 sm:text-xs">
             Featured
           </span>
         )}
       </Link>
 
-      <div className="flex flex-1 flex-col p-5">
-        <Link to={productPath} className="line-clamp-2 text-base font-bold leading-snug text-slate-950 transition-colors hover:text-primary">
+      <div className="flex flex-1 flex-col p-4 sm:p-5">
+        <Link to={productPath} className="line-clamp-2 text-[15px] font-bold leading-snug text-slate-950 transition-colors hover:text-primary sm:text-base">
           {product.title}
         </Link>
-        <p className="mt-3 line-clamp-2 text-sm leading-6 text-slate-500">{description}</p>
+        <p className="mt-2 line-clamp-2 text-sm leading-6 text-slate-500 sm:mt-3">{description}</p>
 
-        <div className="mt-auto flex items-center justify-between gap-3 pt-5">
-          <p className="text-xl font-black text-primary">{formatCurrency(product.price)}</p>
+        <div className="mt-auto flex items-center justify-between gap-3 pt-4 sm:pt-5">
+          <p className="text-lg font-black text-primary sm:text-xl">{formatCurrency(product.price)}</p>
           <div className="flex items-center gap-2">
             <button
               type="button"

@@ -98,13 +98,13 @@ function Navbar() {
         transition={{ duration: 0.45, ease: 'easeOut' }}
         className="fixed left-0 top-0 z-50 w-full border-b border-slate-200/80 bg-white/90 shadow-sm backdrop-blur-xl"
       >
-        <div className="mx-auto flex h-16 max-w-7xl items-center gap-3 px-4 sm:px-6 lg:h-20 lg:px-8">
-          <Link to="/" className="flex min-w-0 flex-shrink-0 items-center" aria-label="Sri Thanam Papers home">
-            <span className="min-w-0 border-l-4 border-accent pl-3">
-              <span className="block truncate font-serif text-xl font-black leading-6 tracking-normal text-slate-950 sm:text-2xl">
+        <div className="mx-auto flex h-16 max-w-7xl items-center gap-2 px-3 sm:gap-3 sm:px-6 lg:h-20 lg:px-8">
+          <Link to="/" className="flex min-w-0 max-w-[calc(100vw-5rem)] items-center sm:max-w-none" aria-label="Sri Thanam Papers home">
+            <span className="min-w-0 border-l-4 border-accent pl-2 sm:pl-3">
+              <span className="block truncate font-serif text-lg font-black leading-5 tracking-normal text-slate-950 sm:text-2xl sm:leading-6">
                 Sri Thanam Papers
               </span>
-              <span className="block text-[10px] font-black uppercase tracking-[0.24em] text-primary">
+              <span className="block truncate text-[9px] font-black uppercase tracking-[0.16em] text-primary sm:text-[10px] sm:tracking-[0.24em]">
                 Premium Stationery
               </span>
             </span>
@@ -275,7 +275,7 @@ function Navbar() {
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
               transition={{ duration: 0.28, ease: 'easeOut' }}
-              className="fixed inset-y-0 right-0 z-50 flex w-[min(22rem,calc(100vw-1rem))] flex-col overflow-y-auto bg-white px-5 pb-8 pt-20 shadow-2xl md:hidden"
+              className="fixed inset-y-0 right-0 z-50 flex w-full max-w-sm flex-col overflow-y-auto bg-white px-4 pb-8 pt-20 shadow-2xl sm:px-5 md:hidden"
             >
               <form onSubmit={handleSearch} className="relative mb-5">
                 <FiSearch className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />

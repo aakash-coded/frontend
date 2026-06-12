@@ -180,7 +180,7 @@ function ProductsPage() {
 
   return (
     <div className="min-h-screen bg-slate-50">
-      <section className="relative overflow-hidden bg-slate-950 px-4 py-12 text-white sm:px-6 lg:px-8">
+      <section className="relative overflow-hidden bg-slate-950 px-4 py-9 text-white sm:px-6 sm:py-12 lg:px-8">
         <div className="absolute inset-0">
           <img
             src="https://images.unsplash.com/photo-1517842645767-c639042777db?auto=format&fit=crop&w=1600&q=80"
@@ -191,9 +191,9 @@ function ProductsPage() {
         </div>
         <div className="relative mx-auto max-w-7xl">
           <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.45 }}>
-            <p className="text-sm font-black uppercase tracking-[0.18em] text-accent">Sri Thanam Papers</p>
+            <p className="text-xs font-black uppercase tracking-[0.16em] text-accent sm:text-sm sm:tracking-[0.18em]">Sri Thanam Papers</p>
             <h1 className="mt-3 text-3xl font-black tracking-tight sm:text-5xl">Our Collection</h1>
-            <p className="mt-4 max-w-2xl text-base leading-7 text-slate-200 sm:text-lg">
+            <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-200 sm:mt-4 sm:text-lg sm:leading-7">
               Discover paper, writing tools, desk supplies, and creative essentials for workspaces that feel composed.
             </p>
           </motion.div>
@@ -203,24 +203,24 @@ function ProductsPage() {
             initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.45, delay: 0.1 }}
-            className="relative mt-7 flex max-w-2xl"
+            className="relative mt-6 flex max-w-2xl sm:mt-7"
           >
             <FiSearch className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
             <input
               type="text"
               placeholder="Search for notebooks, pens, supplies..."
-              className="focus-ring min-w-0 flex-1 rounded-l-2xl border-0 bg-white/95 py-4 pl-12 pr-3 text-sm font-semibold text-slate-900 shadow-xl"
+              className="focus-ring min-w-0 flex-1 rounded-l-xl border-0 bg-white/95 py-3 pl-11 pr-3 text-sm font-semibold text-slate-900 shadow-xl sm:rounded-l-2xl sm:py-4 sm:pl-12"
               value={searchTerm}
               onChange={(event) => setSearchTerm(event.target.value)}
             />
-            <button type="submit" className="rounded-r-2xl bg-accent px-5 py-4 text-sm font-black text-slate-950 shadow-xl transition hover:bg-amber-300 sm:px-7">
+            <button type="submit" className="rounded-r-xl bg-accent px-4 py-3 text-sm font-black text-slate-950 shadow-xl transition hover:bg-amber-300 sm:rounded-r-2xl sm:px-7 sm:py-4">
               Search
             </button>
           </motion.form>
         </div>
       </section>
 
-      <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-7xl px-3 py-6 sm:px-6 sm:py-8 lg:px-8">
         <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
           <div className="flex flex-wrap items-center gap-3">
             <button
@@ -325,7 +325,7 @@ function ProductsPage() {
                 </button>
               </motion.div>
             ) : (
-              <motion.div layout className={`grid gap-6 ${viewMode === 'grid' ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3' : 'grid-cols-1'}`}>
+              <motion.div layout className={`grid gap-4 sm:gap-6 ${viewMode === 'grid' ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3' : 'grid-cols-1'}`}>
                 <AnimatePresence mode="popLayout">
                   {displayed.map((product) => (
                     <ProductCard
