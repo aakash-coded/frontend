@@ -1,9 +1,21 @@
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useLocation } from 'react-router-dom';
 import { FiArrowUp } from 'react-icons/fi';
 
 export function ScrollToTop() {
   const [visible, setVisible] = useState(false);
+  const { pathname, search } = useLocation();
+
+  useEffect(() => {
+    if ('scrollRestoration' in window.history) {
+      window.history.scrollRestoration = 'manual';
+    }
+  }, []);
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+  }, [pathname, search]);
 
   useEffect(() => {
     const onScroll = () => setVisible(window.scrollY > 400);
