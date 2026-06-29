@@ -46,8 +46,8 @@ function CartPage() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 py-10 sm:py-12">
-      <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-slate-50 py-6 sm:py-12">
+      <div className="mx-auto max-w-6xl px-3 sm:px-6 lg:px-8">
         <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <p className="text-sm font-black uppercase tracking-[0.18em] text-accent">Checkout prep</p>
@@ -73,7 +73,7 @@ function CartPage() {
             </Link>
           </motion.div>
         ) : (
-          <div className="grid gap-8 lg:grid-cols-[1fr_22rem]">
+          <div className="grid gap-5 sm:gap-8 lg:grid-cols-[minmax(0,1fr)_22rem]">
             <div className="space-y-4">
               <AnimatePresence>
                 {items.map((item) => {
@@ -88,8 +88,8 @@ function CartPage() {
                       className="overflow-hidden rounded-2xl border border-slate-200 bg-white p-4 shadow-sm transition hover:border-primary/20 hover:shadow-lg sm:p-5"
                     >
                       <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
-                        <div className="flex min-w-0 flex-1 gap-4">
-                          <ProductImage product={item.product} containerClassName="h-24 w-24 flex-shrink-0 rounded-2xl" />
+                        <div className="flex min-w-0 flex-1 gap-3 sm:gap-4">
+                          <ProductImage product={item.product} containerClassName="h-20 w-20 flex-shrink-0 rounded-2xl sm:h-24 sm:w-24" />
                           <div className="min-w-0 flex-1">
                             <Link to={`/product/${item.product?.id}`} className="line-clamp-2 font-black leading-snug text-slate-950 transition hover:text-primary">
                               {item.product?.title}
@@ -101,29 +101,29 @@ function CartPage() {
                           </div>
                         </div>
 
-                        <div className="flex items-center justify-between gap-4 sm:justify-start">
+                        <div className="flex items-center justify-between gap-3 sm:justify-start sm:gap-4">
                           <div className="flex items-center overflow-hidden rounded-xl border border-slate-200 bg-slate-50">
                             <button
                               type="button"
                               aria-label="Decrease quantity"
                               onClick={() => dispatch(updateCartItem({ itemId: item.id, quantity: item.quantity - 1 }))}
                               disabled={item.quantity <= 1}
-                              className="p-3 text-slate-600 transition hover:bg-slate-200 disabled:cursor-not-allowed disabled:opacity-40"
+                              className="p-2.5 text-slate-600 transition hover:bg-slate-200 disabled:cursor-not-allowed disabled:opacity-40 sm:p-3"
                             >
                               <FiMinus />
                             </button>
-                            <span className="min-w-12 px-3 text-center font-black text-slate-950">{item.quantity}</span>
+                            <span className="min-w-10 px-2 text-center font-black text-slate-950 sm:min-w-12 sm:px-3">{item.quantity}</span>
                             <button
                               type="button"
                               aria-label="Increase quantity"
                               onClick={() => dispatch(updateCartItem({ itemId: item.id, quantity: item.quantity + 1 }))}
-                              className="p-3 text-slate-600 transition hover:bg-slate-200"
+                              className="p-2.5 text-slate-600 transition hover:bg-slate-200 sm:p-3"
                             >
                               <FiPlus />
                             </button>
                           </div>
 
-                          <div className="min-w-24 text-right">
+                          <div className="min-w-0 text-right">
                             <p className="font-black text-slate-950">{formatCurrency(unitPrice * item.quantity)}</p>
                             <button
                               type="button"
@@ -143,7 +143,7 @@ function CartPage() {
             </div>
 
             <aside>
-              <div className="sticky top-28 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+              <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-6 lg:sticky lg:top-28">
                 <h2 className="text-xl font-black text-slate-950">Order Summary</h2>
                 <div className="mt-5 rounded-2xl bg-slate-50 p-4">
                   <div className="flex items-center gap-2 text-sm font-black text-primary">

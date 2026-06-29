@@ -164,36 +164,36 @@ function CheckoutPage() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 py-10 sm:py-12">
-      <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-        <div className="mb-8 text-center">
-          <p className="text-sm font-black uppercase tracking-[0.18em] text-accent">Secure checkout</p>
-          <h1 className="mt-2 text-3xl font-black text-slate-950 sm:text-4xl">Checkout</h1>
+    <div className="min-h-screen bg-slate-50 py-6 sm:py-12">
+      <div className="mx-auto max-w-6xl px-3 sm:px-6 lg:px-8">
+        <div className="mb-6 text-center sm:mb-8">
+          <p className="text-xs font-black uppercase tracking-[0.16em] text-accent sm:text-sm sm:tracking-[0.18em]">Secure checkout</p>
+          <h1 className="mt-2 text-2xl font-black text-slate-950 sm:text-4xl">Checkout</h1>
         </div>
 
-        <div className="grid gap-8 lg:grid-cols-[1fr_22rem]">
+        <div className="grid gap-5 sm:gap-8 lg:grid-cols-[minmax(0,1fr)_22rem]">
           <div className="min-w-0">
-            <div className="mb-8 overflow-x-auto rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
-              <div className="flex min-w-[28rem] items-center justify-between">
+            <div className="mb-5 rounded-2xl border border-slate-200 bg-white p-3 shadow-sm sm:mb-8 sm:p-6">
+              <div className="grid grid-cols-3 items-start gap-2 sm:flex sm:items-center sm:justify-between">
                 {steps.map((item, index) => (
-                  <div key={item.id} className="flex flex-1 items-center">
-                    <div className="flex flex-col items-center">
-                      <div className={`flex h-11 w-11 items-center justify-center rounded-xl text-sm font-black transition ${
+                  <div key={item.id} className="flex min-w-0 flex-1 items-center justify-center sm:justify-start">
+                    <div className="flex min-w-0 flex-col items-center">
+                      <div className={`flex h-10 w-10 items-center justify-center rounded-xl text-sm font-black transition sm:h-11 sm:w-11 ${
                         step >= item.id ? 'bg-primary text-white shadow-lg shadow-primary/20' : 'bg-slate-100 text-slate-400'
                       }`}>
                         {step > item.id ? <FiCheckCircle /> : <item.icon />}
                       </div>
-                      <span className={`mt-2 text-xs font-black ${step >= item.id ? 'text-primary' : 'text-slate-400'}`}>{item.label}</span>
+                      <span className={`mt-2 max-w-full truncate text-[11px] font-black sm:text-xs ${step >= item.id ? 'text-primary' : 'text-slate-400'}`}>{item.label}</span>
                     </div>
                     {index < steps.length - 1 && (
-                      <div className={`mx-4 h-1 flex-1 rounded-full transition ${step > item.id ? 'bg-primary' : 'bg-slate-200'}`} />
+                      <div className={`mx-4 hidden h-1 flex-1 rounded-full transition sm:block ${step > item.id ? 'bg-primary' : 'bg-slate-200'}`} />
                     )}
                   </div>
                 ))}
               </div>
             </div>
 
-            <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-8">
+            <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-8">
               <AnimatePresence mode="wait">
                 <motion.div
                   key={step}
@@ -204,7 +204,7 @@ function CheckoutPage() {
                 >
                   {step === 1 && (
                     <section>
-                      <h2 className="mb-6 flex items-center gap-2 text-xl font-black text-slate-950">
+                      <h2 className="mb-5 flex items-center gap-2 text-lg font-black text-slate-950 sm:mb-6 sm:text-xl">
                         <FiMapPin className="text-primary" /> Shipping Address
                       </h2>
                       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
@@ -232,10 +232,10 @@ function CheckoutPage() {
 
                   {step === 2 && (
                     <section>
-                      <h2 className="mb-6 flex items-center gap-2 text-xl font-black text-slate-950">
+                      <h2 className="mb-5 flex items-center gap-2 text-lg font-black text-slate-950 sm:mb-6 sm:text-xl">
                         <FiCreditCard className="text-primary" /> Payment Method
                       </h2>
-                      <div className="rounded-2xl border border-primary bg-primary/5 p-5">
+                      <div className="rounded-2xl border border-primary bg-primary/5 p-4 sm:p-5">
                         <div className="flex items-start gap-4">
                           <div className="mt-0.5 flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-primary text-white">
                             <FiCheckCircle />
@@ -261,18 +261,18 @@ function CheckoutPage() {
 
                   {step === 3 && (
                     <section>
-                      <h2 className="mb-6 flex items-center gap-2 text-xl font-black text-slate-950">
+                      <h2 className="mb-5 flex items-center gap-2 text-lg font-black text-slate-950 sm:mb-6 sm:text-xl">
                         <FiShoppingBag className="text-primary" /> Order Review
                       </h2>
                       <div className="mb-6 space-y-3">
                         {items.map((item) => (
-                          <div key={item.id} className="flex items-center gap-3 rounded-xl bg-slate-50 p-3 sm:gap-4">
-                            <ProductImage product={item.product} containerClassName="h-12 w-12 flex-shrink-0 rounded-xl" />
+                          <div key={item.id} className="grid grid-cols-[3rem_minmax(0,1fr)] gap-3 rounded-xl bg-slate-50 p-3 sm:flex sm:items-center sm:gap-4">
+                            <ProductImage product={item.product} containerClassName="h-12 w-12 rounded-xl" />
                             <div className="min-w-0 flex-1">
                               <p className="line-clamp-1 text-sm font-black text-slate-800">{item.product.title}</p>
                               <p className="text-xs font-semibold text-slate-500">Qty: {item.quantity}</p>
                             </div>
-                            <p className="whitespace-nowrap text-sm font-black text-slate-950 sm:text-base">
+                            <p className="col-start-2 text-sm font-black text-slate-950 sm:whitespace-nowrap sm:text-base">
                               {formatCurrency(Number.parseFloat(item.product.price) * item.quantity)}
                             </p>
                           </div>
@@ -311,13 +311,13 @@ function CheckoutPage() {
             </div>
           </div>
 
-          <aside className="space-y-4">
-            <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+          <aside className="min-w-0 space-y-4">
+            <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
               <h3 className="mb-4 text-lg font-black text-slate-950">Order Summary</h3>
               <div className="max-h-48 space-y-3 overflow-y-auto">
                 {items.map((item) => (
-                  <div key={item.id} className="flex justify-between gap-3 text-sm">
-                    <span className="min-w-0 truncate text-slate-600">{item.product.title} x {item.quantity}</span>
+                  <div key={item.id} className="grid grid-cols-[minmax(0,1fr)_auto] gap-3 text-sm">
+                    <span className="min-w-0 break-words text-slate-600">{item.product.title} x {item.quantity}</span>
                     <span className="font-black text-slate-900">{formatCurrency(Number.parseFloat(item.product.price) * item.quantity)}</span>
                   </div>
                 ))}
@@ -331,11 +331,11 @@ function CheckoutPage() {
               </div>
             </div>
 
-            <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+            <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
               <h3 className="mb-3 flex items-center gap-2 text-sm font-black text-slate-950">
                 <FiTag className="text-primary" /> Apply Coupon
               </h3>
-              <div className="flex gap-2">
+              <div className="flex flex-col gap-2 min-[380px]:flex-row">
                 <input
                   type="text"
                   value={coupon}
@@ -370,25 +370,25 @@ function CheckoutPage() {
 function Totals({ subtotal, discountAmount, deliveryCharge, tax, total }) {
   return (
     <div className="space-y-2 border-t border-slate-100 pt-4 text-sm">
-      <div className="flex justify-between text-slate-600">
+      <div className="grid grid-cols-[minmax(0,1fr)_auto] gap-3 text-slate-600">
         <span>Subtotal</span>
         <span className="font-bold">{formatCurrency(subtotal)}</span>
       </div>
       {discountAmount > 0 && (
-        <div className="flex justify-between text-green-600">
+        <div className="grid grid-cols-[minmax(0,1fr)_auto] gap-3 text-green-600">
           <span>Discount</span>
           <span className="font-bold">-{formatCurrency(discountAmount)}</span>
         </div>
       )}
-      <div className="flex justify-between text-slate-600">
+      <div className="grid grid-cols-[minmax(0,1fr)_auto] gap-3 text-slate-600">
         <span>Delivery</span>
         <span className={deliveryCharge === 0 ? 'font-black text-green-600' : 'font-bold'}>{deliveryCharge === 0 ? 'FREE' : formatCurrency(deliveryCharge)}</span>
       </div>
-      <div className="flex justify-between text-slate-600">
+      <div className="grid grid-cols-[minmax(0,1fr)_auto] gap-3 text-slate-600">
         <span>GST (5%)</span>
         <span className="font-bold">{formatCurrency(tax)}</span>
       </div>
-      <div className="flex justify-between border-t border-slate-200 pt-3 text-lg font-black text-slate-950">
+      <div className="grid grid-cols-[minmax(0,1fr)_auto] gap-3 border-t border-slate-200 pt-3 text-lg font-black text-slate-950">
         <span>Total</span>
         <span className="text-primary">{formatCurrency(total)}</span>
       </div>

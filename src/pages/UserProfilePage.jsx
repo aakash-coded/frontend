@@ -218,7 +218,7 @@ function UserProfilePage() {
           <h1 className="mt-2 text-3xl font-black text-slate-950 sm:text-4xl">My Account</h1>
         </div>
 
-        <div className="grid gap-8 lg:grid-cols-[18rem_1fr]">
+        <div className="grid gap-6 lg:grid-cols-[18rem_minmax(0,1fr)] lg:gap-8">
           <aside>
             <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
               <div className="border-b border-slate-100 bg-gradient-to-br from-primary/10 to-accent/10 p-6 text-center">
@@ -616,7 +616,7 @@ function OrderCard({ order, onCancel }) {
         </div>
       </div>
 
-      <div className="grid gap-4 p-5 lg:grid-cols-[1fr_1.2fr]">
+      <div className="grid gap-4 p-4 sm:p-5 lg:grid-cols-[minmax(0,1fr)_1.2fr]">
         <div className="space-y-2 text-sm text-slate-600">
           <InfoRow label="Payment" value={order.payment_method || 'N/A'} />
           {order.payment_status && <InfoRow label="Payment Status" value={order.payment_status} />}
@@ -671,7 +671,7 @@ function InfoRow({ label, value, tone }) {
   return (
     <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
       <span className="font-black text-slate-700">{label}</span>
-      <span className={`truncate sm:max-w-[12rem] sm:text-right ${tone === 'success' ? 'font-black text-green-600' : 'font-semibold text-slate-500'}`}>
+      <span className={`min-w-0 break-words sm:max-w-[12rem] sm:text-right ${tone === 'success' ? 'font-black text-green-600' : 'font-semibold text-slate-500'}`}>
         {value}
       </span>
     </div>
